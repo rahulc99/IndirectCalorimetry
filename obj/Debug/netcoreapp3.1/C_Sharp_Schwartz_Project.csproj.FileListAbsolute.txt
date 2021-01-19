@@ -1,0 +1,12 @@
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/bin/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.deps.json
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/bin/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.runtimeconfig.json
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/bin/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.runtimeconfig.dev.json
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/bin/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.dll
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/bin/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.pdb
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/obj/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.csprojAssemblyReference.cache
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/obj/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.csproj.CoreCompileInputs.cache
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/obj/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.AssemblyInfoInputs.cache
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/obj/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.AssemblyInfo.cs
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/obj/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.dll
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/obj/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.pdb
+/Users/rahul/Documents/C_Sharp_Schwartz_Project/obj/Debug/netcoreapp3.1/C_Sharp_Schwartz_Project.genruntimeconfig.cache
