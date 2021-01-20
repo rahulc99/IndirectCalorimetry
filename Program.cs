@@ -10,11 +10,12 @@ namespace IndirectCalorimetrys
     {
         static void Main(string[] args)
         {
-            int input = 0;
-
-            List<IndirectCalorimetry> list = IndirectCalorimetryParser.Parse("/Users/rahul/Desktop/Schwartz_Project/2020.11.13_HFHS_Final-Calorimetry-1hbin_formatted.csv");
+            int input = 5;
+            string filepath = "/Users/rahul/Desktop/Schwartz_Project/2020.11.13_HFHS_Final-Calorimetry-1hbin_formatted.csv";
+            FileInfo fileInfo = new FileInfo(filepath);
+            List<IndirectCalorimetry> list = IndirectCalorimetryParser.Parse(fileInfo.FullName);
             
-             List<IndirectCalorimetry> updatedList = new List<IndirectCalorimetry>();
+            List<IndirectCalorimetry> updatedList = new List<IndirectCalorimetry>();
 
             foreach (IndirectCalorimetry item in list)
             {
@@ -101,7 +102,12 @@ namespace IndirectCalorimetrys
                 }
             }
 
-            using (var stream = new StreamWriter(File.OpenWrite("/Users/rahul/Desktop/Schwartz_Project/Results.csv")))
+            string resultsFileName = $"{fileInfo.Directory.FullName}/{Path.GetFileNameWithoutExtension(fileInfo.FullName)}_Results.csv";
+            using (var stream = new StreamWriter(
+                File.Open(resultsFileName, 
+                    FileMode.Create, 
+                    FileAccess.ReadWrite, 
+                    FileShare.ReadWrite)))
             {
                 stream.Write("Animal");
                 stream.Write(",");
