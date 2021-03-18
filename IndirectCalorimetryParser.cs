@@ -22,6 +22,8 @@ namespace IndirectCalorimetrys
         public static List<IndirectCalorimetry> Parse(string filepath)
         {
             bool parsingHeaderCompleted = false;
+
+            // Initialize an empty list
             List<IndirectCalorimetry> list = new List<IndirectCalorimetry>();
 
             // Open and read the file line by line until we reach the end of the file.
@@ -31,9 +33,9 @@ namespace IndirectCalorimetrys
                 {
                     string line = reader.ReadLine();
 
-
                     // If the line starts with "DateTime", we know that we have reached the header line
-                    if (line.StartsWith($"\"{IndirectCalorimetry.DateTime}\"") || 
+                    if (
+                        line.StartsWith($"\"{IndirectCalorimetry.DateTime}\"") || 
                         line.StartsWith(IndirectCalorimetry.DateTime))
                     {
                         ParseHeader(filepath, line);

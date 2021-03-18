@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 namespace IndirectCalorimetrys
 {
     class IndirectCalorimetry
-    {        
+    {   
         // Constants to store the names of the properties of an IndirectCalorimetry.
         public const string DateTime = "DT";
         public const string Animal = "Animal";

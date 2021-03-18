@@ -5,14 +5,22 @@ using System.Collections.Generic;
 using System.Globalization;
 
 namespace IndirectCalorimetrys
-{
+{   
     class Program
     {
+        // Main driver method
         static void Main(string[] args)
         {
-            int input = 5;
+            
+            int lightsOnTime = 6; // Read the lights on time from the args later.
+            int lightsOffTime = 14; 
+
             string filepath = "/Users/rahul/Desktop/Schwartz_Project/2020.11.13_HFHS_Final-Calorimetry-1hbin_formatted.csv";
+            
+            // Create a FileInfo object using the filepath
             FileInfo fileInfo = new FileInfo(filepath);
+
+            //Parse the file and get list of IndirectCalorimetry ojects
             List<IndirectCalorimetry> list = IndirectCalorimetryParser.Parse(fileInfo.FullName);
             
             List<IndirectCalorimetry> updatedList = new List<IndirectCalorimetry>();
@@ -22,6 +30,7 @@ namespace IndirectCalorimetrys
                 string animalName = item.Get(IndirectCalorimetry.Animal);
                 if (string.IsNullOrWhiteSpace(animalName) || animalName.Equals("NA", StringComparison.OrdinalIgnoreCase))
                 {
+                    // Invalid animal. Ignore this item.
                     continue;
                 }
 
@@ -36,7 +45,7 @@ namespace IndirectCalorimetrys
                 if (DateTime.TryParseExact(item.Get(IndirectCalorimetry.DateTime), 
                 "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dt))
                 {
-                    DateTime newDt = dt.Subtract(TimeSpan.FromHours(input));
+                    DateTime newDt = dt.Subtract(TimeSpan.FromHours(lightsOnTime));
                     item.ZTTime = newDt;
                     updatedList.Add(item);
                 }
@@ -72,6 +81,7 @@ namespace IndirectCalorimetrys
                         {
                             result.StartTime = item.ZTTime;
                             result.MaxVO2_M = v02_m;
+                            result.MinVO2_M = v02_m;
                         }
                         else
                         {
@@ -81,8 +91,27 @@ namespace IndirectCalorimetrys
                                 result.MaxVO2_M = v02_m;
                                 result.MaxOccurredAtTime = item.ZTTime;
                             } 
+                            
+                            if (result.MinVO2_M > v02_m)
+                            {
+                                result.MinVO2_M = v02_m;
+                                result.MinOccurredAtTime = item.ZTTime;
+                            }
                         }
                     }
+
+                    DateTime tempDate = new DateTime(
+                        result.MaxOccurredAtTime.Year,
+                        result.MaxOccurredAtTime.Month,
+                        result.MaxOccurredAtTime.Day,
+                        lightsOffTime,
+                        0,
+                        0);
+
+                    TimeSpan timeDiff = result.MaxOccurredAtTime - tempDate;
+                    result.LatencyToPeakInMin = timeDiff.TotalMinutes;
+
+                    result.PeakToPeakAmplitude = result.MaxVO2_M - result.MinVO2_M;
 
                     List<Result> r;
                     if (!results.TryGetValue(animal, out r))
@@ -118,6 +147,14 @@ namespace IndirectCalorimetrys
                 stream.Write("MaxOccurredAtTime");
                 stream.Write(",");
                 stream.Write("MaxVO2_M");
+                stream.Write(",");
+                stream.Write("MinOccurredAtTime");
+                stream.Write(",");
+                stream.Write("MinVO2_M");
+                stream.Write(",");
+                stream.Write("LatencyToPeakInMin");
+                stream.Write(",");
+                stream.Write("PeakToPeakAmplitude");
                 stream.WriteLine();
                 
                 var animalNames = results.Keys.ToList();
@@ -137,6 +174,14 @@ namespace IndirectCalorimetrys
                         stream.Write(item.MaxOccurredAtTime.ToString("G"));
                         stream.Write(",");
                         stream.Write(item.MaxVO2_M);
+                        stream.Write(",");
+                        stream.Write(item.MinOccurredAtTime.ToString("G"));
+                        stream.Write(",");
+                        stream.Write(item.MinVO2_M);
+                        stream.Write(",");
+                        stream.Write(item.LatencyToPeakInMin);
+                        stream.Write(",");
+                        stream.Write(item.PeakToPeakAmplitude);
                         stream.WriteLine();
                     }
                 }
@@ -152,7 +197,10 @@ namespace IndirectCalorimetrys
         public DateTime StartTime {get;set;}
         public DateTime EndTime {get;set;}
         public float MaxVO2_M {get;set;}
-
         public DateTime MaxOccurredAtTime {get;set;}
+        public float MinVO2_M {get;set;}
+        public DateTime MinOccurredAtTime {get;set;}
+        public Double LatencyToPeakInMin {get;set;}
+        public float PeakToPeakAmplitude {get;set;}
     }
 }
