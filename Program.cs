@@ -62,6 +62,7 @@ namespace IndirectCalorimetrys
                 List<IndirectCalorimetry> items = itemsGroupedByAnimal[animal];
 
                 int day = 0;
+                DateTime? previousMaxDateTime = null;
                 while (true)
                 {                
                     Result result = new Result() { Animal = animal};
@@ -81,7 +82,9 @@ namespace IndirectCalorimetrys
                         {
                             result.StartTime = item.ZTTime;
                             result.MaxVO2_M = v02_m;
+                            result.MaxOccurredAtTime = item.ZTTime;
                             result.MinVO2_M = v02_m;
+                            result.MinOccurredAtTime = item.ZTTime;
                         }
                         else
                         {
@@ -112,6 +115,17 @@ namespace IndirectCalorimetrys
                     result.LatencyToPeakInMin = timeDiff.TotalMinutes;
 
                     result.PeakToPeakAmplitude = result.MaxVO2_M - result.MinVO2_M;
+
+                    if (day == 0)
+                    {
+                        previousMaxDateTime = result.MaxOccurredAtTime;
+                    }
+                    else
+                    {
+                        result.PeriodInMin = (result.MaxOccurredAtTime - previousMaxDateTime.Value).TotalMinutes;
+                        previousMaxDateTime = result.MaxOccurredAtTime;
+                    }
+
 
                     List<Result> r;
                     if (!results.TryGetValue(animal, out r))
@@ -155,6 +169,8 @@ namespace IndirectCalorimetrys
                 stream.Write("LatencyToPeakInMin");
                 stream.Write(",");
                 stream.Write("PeakToPeakAmplitude");
+                stream.Write(",");
+                stream.Write("PeriodInMin");
                 stream.WriteLine();
                 
                 var animalNames = results.Keys.ToList();
@@ -182,6 +198,8 @@ namespace IndirectCalorimetrys
                         stream.Write(item.LatencyToPeakInMin);
                         stream.Write(",");
                         stream.Write(item.PeakToPeakAmplitude);
+                        stream.Write(",");
+                        stream.Write(item.PeriodInMin);
                         stream.WriteLine();
                     }
                 }
@@ -202,5 +220,6 @@ namespace IndirectCalorimetrys
         public DateTime MinOccurredAtTime {get;set;}
         public Double LatencyToPeakInMin {get;set;}
         public float PeakToPeakAmplitude {get;set;}
+        public Double PeriodInMin {get;set;}
     }
 }
